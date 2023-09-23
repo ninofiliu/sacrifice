@@ -1,4 +1,5 @@
 import { Environment } from "@react-three/drei";
+import { Bloom, EffectComposer } from "@react-three/postprocessing";
 
 export const World = () => {
   return (
@@ -9,6 +10,9 @@ export const World = () => {
       </mesh>
       <Environment preset="forest" background />
       <axesHelper />
+      <EffectComposer>
+        <Bloom />
+      </EffectComposer>
     </>
   );
 };
