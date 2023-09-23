@@ -11,6 +11,7 @@ module.exports = {
   parser: "@typescript-eslint/parser",
   plugins: ["react-refresh", "simple-import-sort", "unused-imports"],
   rules: {
+    "@typescript-eslint/consistent-type-imports": "error",
     "simple-import-sort/imports": "error",
     "simple-import-sort/exports": "error",
     "react-refresh/only-export-components": [
