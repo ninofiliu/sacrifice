@@ -8,6 +8,9 @@ dependencies:
   '@react-three/fiber':
     specifier: ^8.14.2
     version: 8.14.2(react-dom@18.2.0)(react@18.2.0)(three@0.156.1)
+  postprocessing:
+    specifier: ^6.33.1
+    version: 6.33.1(three@0.156.1)
   react:
     specifier: ^18.2.0
     version: 18.2.0
@@ -2160,7 +2163,6 @@ packages:
       three: '>= 0.138.0 < 0.157.0'
     dependencies:
       three: 0.156.1
-    dev: true
 
   /potpack@1.0.2:
     resolution: {integrity: sha512-choctRBIV9EMT9WGAZHn3V7t0Z2pMQyl0EZE6pFc/6ml3ssw7Dlf/oAOvFwjm1HVsqfQN8GfeFyJ+d8tRzqueQ==}
