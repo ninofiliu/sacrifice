@@ -35,7 +35,7 @@ const Terrain = () => {
         <planeGeometry
           args={[TREADMILL_LENGTH / n, TREADMILL_LENGTH / n, 100, 100]}
         />
-        {Math.random() < 0 ? (
+        {Math.random() < 1 ? (
           <meshStandardMaterial
             {...forestGroundMaps}
             displacementScale={3}
