@@ -1,12 +1,52 @@
-import { Environment, OrbitControls } from "@react-three/drei";
+import { Environment, OrbitControls, useTexture } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import type { ReactNode } from "react";
 import { useState } from "react";
 
 import { AdamRunning } from "./AdamRunning";
 
-const TREADMILL_SPEED = 6;
+const TREADMILL_SPEED = 5;
 const TREADMILL_LENGTH = 30;
+
+const Terrain = () => {
+  const n = 3;
+  const forestGroundMaps = useTexture({
+    map: "/textures/forest_ground_04_diff_2k.jpg",
+    aoMap: "/textures/forest_ground_04_ao_2k.jpg",
+    displacementMap: "/textures/forest_ground_04_disp_2k.jpg",
+    roughnessMap: "/textures/forest_ground_04_rough_2k.jpg",
+    normalMap: "/textures/forest_ground_04_nor_dx_2k.jpg",
+  });
+  const mudCrackedMaps = useTexture({
+    map: "/textures/mud_cracked_dry_03_diff_2k.jpg",
+    aoMap: "/textures/mud_cracked_dry_03_ao_2k.jpg",
+    displacementMap: "/textures/mud_cracked_dry_03_disp_2k.jpg",
+    roughnessMap: "/textures/mud_cracked_dry_03_rough_2k.jpg",
+    normalMap: "/textures/mud_cracked_dry_03_nor_dx_2k.jpg",
+  });
+  return Array(n)
+    .fill(null)
+    .map((_, i) => (
+      <mesh
+        key={i}
+        rotation={[-Math.PI / 2, 0, 0]}
+        position={[0, 0, ((i + 0.5) * TREADMILL_LENGTH) / n]}
+      >
+        <planeGeometry
+          args={[TREADMILL_LENGTH / n, TREADMILL_LENGTH / n, 100, 100]}
+        />
+        {Math.random() < 0 ? (
+          <meshStandardMaterial
+            {...forestGroundMaps}
+            displacementScale={3}
+            displacementBias={-0.5}
+          />
+        ) : (
+          <meshStandardMaterial {...mudCrackedMaps} displacementScale={0.1} />
+        )}
+      </mesh>
+    ));
+};
 
 const Treadmill = ({ children }: { children: ReactNode }) => {
   const [z, setZ] = useState(0);
@@ -27,16 +67,11 @@ export const World = () => {
     <>
       <AdamRunning />
       <Treadmill>
-        <mesh
-          rotation={[-Math.PI / 2, 0, 0]}
-          position={[0, 0, TREADMILL_LENGTH / 2]}
-        >
-          <planeGeometry args={[1, TREADMILL_LENGTH, 1, 1]} />
-          <meshBasicMaterial wireframe />
-        </mesh>
+        <Terrain />
       </Treadmill>
 
-      <ambientLight />
+      <ambientLight intensity={0.5} />
+      <directionalLight position={[1, 1, 1]} intensity={2} />
       <fog attach="fog" color="grey" near={1} far={25} />
       <Environment preset="forest" />
       <color attach="background" args={["grey"]} />
