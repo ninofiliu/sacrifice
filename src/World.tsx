@@ -5,19 +5,19 @@ import { useState } from "react";
 
 import { AdamRunning } from "./AdamRunning";
 
-const PATH_SPEED = 6;
-const PATH_LENGTH = 30;
+const TREADMILL_SPEED = 6;
+const TREADMILL_LENGTH = 30;
 
-const Path = ({ children }: { children: ReactNode }) => {
+const Treadmill = ({ children }: { children: ReactNode }) => {
   const [z, setZ] = useState(0);
   useFrame((_, delta) => {
-    setZ((z + delta * PATH_SPEED) % PATH_LENGTH);
+    setZ((z + delta * TREADMILL_SPEED) % TREADMILL_LENGTH);
   });
   return (
     <>
-      <group position={[0, 0, -z - PATH_LENGTH]}>{children}</group>
+      <group position={[0, 0, -z - TREADMILL_LENGTH]}>{children}</group>
       <group position={[0, 0, -z]}>{children}</group>
-      <group position={[0, 0, -z + PATH_LENGTH]}>{children}</group>
+      <group position={[0, 0, -z + TREADMILL_LENGTH]}>{children}</group>
     </>
   );
 };
@@ -26,15 +26,15 @@ export const World = () => {
   return (
     <>
       <AdamRunning />
-      <Path>
+      <Treadmill>
         <mesh
           rotation={[-Math.PI / 2, 0, 0]}
-          position={[0, 0, PATH_LENGTH / 2]}
+          position={[0, 0, TREADMILL_LENGTH / 2]}
         >
-          <planeGeometry args={[1, PATH_LENGTH, 1, 1]} />
+          <planeGeometry args={[1, TREADMILL_LENGTH, 1, 1]} />
           <meshBasicMaterial wireframe />
         </mesh>
-      </Path>
+      </Treadmill>
 
       <ambientLight />
       <fog attach="fog" color="grey" near={1} far={25} />
