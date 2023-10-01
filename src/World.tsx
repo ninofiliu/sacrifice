@@ -29,24 +29,29 @@ const Terrain = () => {
   return Array(n)
     .fill(null)
     .map((_, i) => (
-      <mesh
-        key={i}
-        rotation={[-Math.PI / 2, 0, 0]}
-        position={[0, 0, ((i + 0.5) * TREADMILL_LENGTH) / n]}
-      >
-        <planeGeometry
-          args={[TREADMILL_LENGTH / n, TREADMILL_LENGTH / n, 100, 100]}
-        />
-        {Math.random() < 1 ? (
-          <meshStandardMaterial
-            {...forestGroundMaps}
-            displacementScale={3}
-            displacementBias={-0.5}
-          />
-        ) : (
-          <meshStandardMaterial {...mudCrackedMaps} displacementScale={0.1} />
-        )}
-      </mesh>
+      <group key={i} position={[0, 0, ((i + 0.5) * TREADMILL_LENGTH) / n]}>
+        {[-1, 0, 1].map((ix) => (
+          <group position={[(ix * TREADMILL_LENGTH) / n, 0, 0]}>
+            <mesh rotation={[-Math.PI / 2, 0, 0]}>
+              <planeGeometry
+                args={[TREADMILL_LENGTH / n, TREADMILL_LENGTH / n, 100, 100]}
+              />
+              {Math.random() < 1 ? (
+                <meshStandardMaterial
+                  {...forestGroundMaps}
+                  displacementScale={3}
+                  displacementBias={-0.5}
+                />
+              ) : (
+                <meshStandardMaterial
+                  {...mudCrackedMaps}
+                  displacementScale={0.1}
+                />
+              )}
+            </mesh>
+          </group>
+        ))}
+      </group>
     ));
 };
 
