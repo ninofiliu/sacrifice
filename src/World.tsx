@@ -1,11 +1,9 @@
 import { Environment, OrbitControls, useTexture } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
-import { EffectComposer } from "@react-three/postprocessing";
 import type { ReactNode } from "react";
 import { useState } from "react";
 
 import { AdamRunning } from "./AdamRunning";
-import { Post } from "./Post";
 
 const TREADMILL_SPEED = 5;
 const TREADMILL_LENGTH = 30;
@@ -77,9 +75,6 @@ export const World = () => {
       <fog attach="fog" color="grey" near={1} far={25} />
       <Environment preset="forest" />
       <color attach="background" args={["grey"]} />
-      <EffectComposer>
-        <Post param={0.9} />
-      </EffectComposer>
 
       <OrbitControls />
       <axesHelper />
