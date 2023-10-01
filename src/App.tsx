@@ -1,28 +1,21 @@
-import { Canvas } from "@react-three/fiber";
-import { useRef, useState } from "react";
+import { createRoot, extend } from "@react-three/fiber";
+import * as THREE from "three";
 
 import { height, width } from "./consts";
 import { startMosh } from "./mosh";
 import { World } from "./World";
 
-export const App = () => {
-  const [src, setSrc] = useState<HTMLCanvasElement | null>(null);
-  const [dst, setDst] = useState<HTMLCanvasElement | null>(null);
-  const started = useRef(false);
+extend(THREE);
 
-  if (!started.current && src && dst) {
-    started.current = true;
-    startMosh(src, dst);
-  }
+const src = document.createElement("canvas");
+const root = createRoot(src);
+root.configure({ size: { width, height, top: 0, left: 0 } });
+root.render(<World />);
 
-  return (
-    <>
-      <div style={{ width: width + "px", height: height + "px" }}>
-        <Canvas ref={setSrc} gl={{ preserveDrawingBuffer: true }}>
-          <World />
-        </Canvas>
-      </div>
-      <canvas ref={setDst} width={width} height={height} />
-    </>
-  );
-};
+const dst = document.createElement("canvas");
+dst.width = width;
+dst.height = height;
+
+startMosh(src, dst);
+
+document.body.append(src, dst);
