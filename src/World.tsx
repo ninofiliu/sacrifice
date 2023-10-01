@@ -4,9 +4,11 @@ import type { ReactNode } from "react";
 import { useState } from "react";
 
 import { AdamRunning } from "./AdamRunning";
+import { Oak1 } from "./trees";
 
 const TREADMILL_SPEED = 5;
 const TREADMILL_LENGTH = 30;
+const FOG = 25;
 
 const Terrain = () => {
   const n = 3;
@@ -65,29 +67,44 @@ const Treadmill = ({ children }: { children: ReactNode }) => {
 const rf = (min: number, max: number) => min + (max - min) * Math.random();
 const rp = <T,>(args: T[]) => args[~~rf(0, args.length)];
 
-const Treaded = ({ xMin, children }: { xMin: number; children: ReactNode }) => {
-  const [x, setX] = useState(rf(xMin, 10) * rp([-1, 1]));
-  const [z, setZ] = useState(rf(TREADMILL_LENGTH, 2 * TREADMILL_LENGTH));
+const Treaded = ({
+  xMin,
+  xMax,
+  children,
+}: {
+  xMin: number;
+  xMax: number;
+  children: ReactNode;
+}) => {
+  const [x, setX] = useState(rf(xMin, xMax) * rp([-1, 1]));
+  const [z, setZ] = useState(rf(FOG, 3 * FOG));
+  const [ry, setRy] = useState(rf(0, Math.PI));
   useFrame((_, delta) => {
-    if (z < -TREADMILL_LENGTH) {
-      setX(rf(xMin, 10) * rp([-1, 1]));
-      setZ(rf(TREADMILL_LENGTH, 2 * TREADMILL_LENGTH));
+    if (z < -FOG) {
+      setX(rf(xMin, xMax) * rp([-1, 1]));
+      setZ(rf(FOG, 2 * FOG));
+      setRy(rf(0, Math.PI));
     } else {
       setZ(z - delta * TREADMILL_SPEED);
     }
   });
-  return <group position={[x, 0, z]}>{children}</group>;
+  return (
+    <group position={[x, 0, z]} rotation={[0, ry, 0]}>
+      {children}
+    </group>
+  );
 };
 
 export const World = () => {
   return (
     <>
-      <Treaded xMin={2}>
-        <mesh>
-          <boxGeometry args={[1, 1, 1, 1, 1, 1]} />
-          <meshBasicMaterial color="red" wireframe />
-        </mesh>
-      </Treaded>
+      {Array(50)
+        .fill(null)
+        .map((_, i) => (
+          <Treaded xMin={7} xMax={15}>
+            <Oak1 key={i} />
+          </Treaded>
+        ))}
       <AdamRunning />
       <Treadmill>
         <Terrain />
