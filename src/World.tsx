@@ -111,7 +111,6 @@ export const World = () => {
       </Treadmill>
 
       <ambientLight intensity={0.5} />
-      <directionalLight position={[1, 1, 1]} intensity={2} />
       <fog attach="fog" color="grey" near={1} far={25} />
       <Environment preset="forest" />
       <color attach="background" args={["grey"]} />
