@@ -62,9 +62,32 @@ const Treadmill = ({ children }: { children: ReactNode }) => {
   );
 };
 
+const rf = (min: number, max: number) => min + (max - min) * Math.random();
+const rp = <T,>(args: T[]) => args[~~rf(0, args.length)];
+
+const Treaded = ({ xMin, children }: { xMin: number; children: ReactNode }) => {
+  const [x, setX] = useState(rf(xMin, 10) * rp([-1, 1]));
+  const [z, setZ] = useState(rf(TREADMILL_LENGTH, 2 * TREADMILL_LENGTH));
+  useFrame((_, delta) => {
+    if (z < -TREADMILL_LENGTH) {
+      setX(rf(xMin, 10) * rp([-1, 1]));
+      setZ(rf(TREADMILL_LENGTH, 2 * TREADMILL_LENGTH));
+    } else {
+      setZ(z - delta * TREADMILL_SPEED);
+    }
+  });
+  return <group position={[x, 0, z]}>{children}</group>;
+};
+
 export const World = () => {
   return (
     <>
+      <Treaded xMin={2}>
+        <mesh>
+          <boxGeometry args={[1, 1, 1, 1, 1, 1]} />
+          <meshBasicMaterial color="red" wireframe />
+        </mesh>
+      </Treaded>
       <AdamRunning />
       <Treadmill>
         <Terrain />
