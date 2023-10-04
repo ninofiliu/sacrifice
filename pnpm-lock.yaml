@@ -37,6 +37,9 @@ devDependencies:
   '@types/three':
     specifier: ^0.156.0
     version: 0.156.0
+  '@types/webmidi':
+    specifier: ^2.0.8
+    version: 2.0.8
   '@typescript-eslint/eslint-plugin':
     specifier: ^6.0.0
     version: 6.7.2(@typescript-eslint/parser@6.7.2)(eslint@8.50.0)(typescript@5.2.2)
@@ -699,6 +702,10 @@ packages:
       '@types/webxr': 0.5.4
       fflate: 0.6.10
       meshoptimizer: 0.18.1
+    dev: true
+
+  /@types/webmidi@2.0.8:
+    resolution: {integrity: sha512-GMwIMYwLNpevZfcBeNrwavlbqY33SVfZdvQYfIAGtUFZnDZnDcMIN9s52Ksz341ylGUszOcAKlXUfz3QBOaA+w==}
     dev: true
 
   /@types/webxr@0.5.4:
