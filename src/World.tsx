@@ -6,6 +6,7 @@ import { useState } from "react";
 
 import { AdamRunning } from "./AdamRunning";
 import { Oak1 } from "./trees";
+import { Wolf } from "./Wolf";
 
 const TREADMILL_SPEED = 5;
 const TREADMILL_LENGTH = 30;
@@ -104,14 +105,16 @@ const Treaded = ({
 export const World = () => {
   return (
     <>
+      <AdamRunning position={[1, 0, 0]} />
+      <Wolf position={[-1, 0, 0]} scale={2} />
+
       {Array(10)
         .fill(null)
         .map((_, i) => (
-          <Treaded xMin={4} xMax={15}>
-            <Oak1 key={i} />
+          <Treaded key={i} xMin={4} xMax={15}>
+            <Oak1 />
           </Treaded>
         ))}
-      <AdamRunning />
       <Treadmill>
         <Terrain />
       </Treadmill>
@@ -120,7 +123,7 @@ export const World = () => {
       <Environment preset="forest" />
 
       <EffectComposer>
-        <Bloom luminanceThreshold={0.3} />
+        <Bloom luminanceThreshold={100} />
       </EffectComposer>
 
       <OrbitControls />

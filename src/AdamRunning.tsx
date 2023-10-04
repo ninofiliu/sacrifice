@@ -1,11 +1,12 @@
 import { useAnimations, useGLTF } from "@react-three/drei";
+import type { GroupProps } from "@react-three/fiber";
 import { useEffect, useRef } from "react";
 import type { Group, Material, Object3DEventMap, SkinnedMesh } from "three";
 import type { GLTF } from "three-stdlib";
 
 useGLTF.preload("/AdamRunning.glb");
 
-export const AdamRunning = () => {
+export const AdamRunning = (props: Omit<GroupProps, "ref" | "dispose">) => {
   const group = useRef<Group<Object3DEventMap>>(null!);
   const { nodes, materials, animations } = useGLTF(
     "/AdamRunning.glb"
@@ -18,7 +19,7 @@ export const AdamRunning = () => {
     actions["Armature|mixamo.com|Layer0"]?.play();
   }, [actions]);
   return (
-    <group ref={group} dispose={null}>
+    <group {...props} ref={group} dispose={null}>
       <group name="Scene">
         <group name="Armature" rotation={[Math.PI / 2, 0, 0]} scale={0.01}>
           <primitive object={nodes.mixamorig7Hips} />
