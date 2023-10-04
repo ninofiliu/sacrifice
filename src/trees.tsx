@@ -15,7 +15,9 @@ export function Oak1() {
         geometry={nodes.structure.geometry}
         material={materials.bark}
         rotation={[Math.PI / 2, 0, 0]}
-      />
+      >
+        {/* <meshStandardMaterial color={0xff0000} wireframe /> */}
+      </mesh>
       <mesh
         geometry={nodes.foliage.geometry}
         material={materials.foliage}

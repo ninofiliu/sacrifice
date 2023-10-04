@@ -1,5 +1,6 @@
 import { Environment, OrbitControls, useTexture } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
+import { Bloom, EffectComposer } from "@react-three/postprocessing";
 import type { ReactNode } from "react";
 import { useState } from "react";
 
@@ -103,10 +104,10 @@ const Treaded = ({
 export const World = () => {
   return (
     <>
-      {Array(50)
+      {Array(10)
         .fill(null)
         .map((_, i) => (
-          <Treaded xMin={7} xMax={15}>
+          <Treaded xMin={4} xMax={15}>
             <Oak1 key={i} />
           </Treaded>
         ))}
@@ -115,10 +116,12 @@ export const World = () => {
         <Terrain />
       </Treadmill>
 
-      <ambientLight intensity={0.5} />
-      <fog attach="fog" color="grey" near={1} far={25} />
+      <ambientLight intensity={1} />
       <Environment preset="forest" />
-      <color attach="background" args={["grey"]} />
+
+      <EffectComposer>
+        <Bloom luminanceThreshold={0.3} />
+      </EffectComposer>
 
       <OrbitControls />
       <axesHelper />
