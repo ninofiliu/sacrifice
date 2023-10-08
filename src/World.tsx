@@ -5,6 +5,8 @@ import type { ReactNode } from "react";
 import { useState } from "react";
 
 import { AdamRunning } from "./AdamRunning";
+import { knobs } from "./ddj";
+import { rf, rp } from "./shorts";
 import { Oak1 } from "./trees";
 import { Wolf } from "./Wolf";
 
@@ -33,7 +35,7 @@ const Terrain = () => {
     .map((_, i) => (
       <group key={i} position={[0, 0, ((i + 0.5) * TREADMILL_LENGTH) / n]}>
         {[-1, 0, 1].map((ix) => (
-          <group position={[(ix * TREADMILL_LENGTH) / n, 0, 0]}>
+          <group key={ix} position={[(ix * TREADMILL_LENGTH) / n, 0, 0]}>
             <mesh rotation={[-Math.PI / 2, 0, 0]}>
               <planeGeometry
                 args={[TREADMILL_LENGTH / n, TREADMILL_LENGTH / n, 100, 100]}
@@ -60,7 +62,7 @@ const Terrain = () => {
 const Treadmill = ({ children }: { children: ReactNode }) => {
   const [z, setZ] = useState(0);
   useFrame((_, delta) => {
-    setZ((z + delta * TREADMILL_SPEED) % TREADMILL_LENGTH);
+    setZ((z + delta * knobs.rightTempo * TREADMILL_SPEED) % TREADMILL_LENGTH);
   });
   return (
     <>
@@ -70,9 +72,6 @@ const Treadmill = ({ children }: { children: ReactNode }) => {
     </>
   );
 };
-
-const rf = (min: number, max: number) => min + (max - min) * Math.random();
-const rp = <T,>(args: T[]) => args[~~rf(0, args.length)];
 
 const Treaded = ({
   xMin,
@@ -92,7 +91,7 @@ const Treaded = ({
       setZ(rf(FOG, 2 * FOG));
       setRy(rf(0, Math.PI));
     } else {
-      setZ(z - delta * TREADMILL_SPEED);
+      setZ(z - delta * knobs.leftTempo * TREADMILL_SPEED);
     }
   });
   return (

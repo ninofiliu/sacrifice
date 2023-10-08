@@ -18,3 +18,8 @@ export const objMap = <K extends string, V, W>(
 ): Record<K, W> =>
   // @ts-ignore
   Object.fromEntries(Object.entries(obj).map(([k, v]) => [k, map(k, v)]));
+
+export const rf = (min: number, max: number) =>
+  min + (max - min) * Math.random();
+
+export const rp = <T>(args: T[]) => args[~~rf(0, args.length)];

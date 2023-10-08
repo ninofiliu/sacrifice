@@ -11,6 +11,7 @@ export const buttons = objMap(buttonsMap, () => false);
 
 const knobsMap = {
   leftTempo: [176, 0],
+  rightTempo: [177, 0],
 } as const;
 
 export const knobs = objMap(knobsMap, () => 0);
@@ -42,7 +43,7 @@ export const offsets = objMap(offsetsMap, () => 0);
 
     objEach(offsetsMap, (k, [aa, bb]) => {
       if (!(a === aa && b === bb)) return;
-      offsets[k] += c === 63 ? -1 : -1;
+      offsets[k] += c === 63 ? -1 : 1;
     });
   });
 })();
