@@ -23,3 +23,5 @@ export const rf = (min: number, max: number) =>
   min + (max - min) * Math.random();
 
 export const rp = <T>(args: T[]) => args[~~rf(0, args.length)];
+
+export const mod = (a: number, b: number) => ((a % b) + b) % b;

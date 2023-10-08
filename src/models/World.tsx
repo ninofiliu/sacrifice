@@ -2,10 +2,10 @@ import { Environment, OrbitControls, useTexture } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { Bloom, EffectComposer } from "@react-three/postprocessing";
 import type { ReactNode } from "react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
-import { knobs } from "../ddj";
-import { rf, rp } from "../shorts";
+import { knobs, useTime } from "../ddj";
+import { mod, rf, rp } from "../shorts";
 import { AdamRunning } from "./AdamRunning";
 import { Oak1 } from "./trees";
 import { Wolf } from "./Wolf";
@@ -73,30 +73,15 @@ const Treadmill = ({ children }: { children: ReactNode }) => {
   );
 };
 
-const Treaded = ({
-  xMin,
-  xMax,
-  children,
-}: {
-  xMin: number;
-  xMax: number;
-  children: ReactNode;
-}) => {
-  const [x, setX] = useState(rf(xMin, xMax) * rp([-1, 1]));
-  const [z, setZ] = useState(rf(FOG, 3 * FOG));
-  const [ry, setRy] = useState(rf(0, Math.PI));
-  useFrame((_, delta) => {
-    if (z < -FOG) {
-      setX(rf(xMin, xMax) * rp([-1, 1]));
-      setZ(rf(FOG, 2 * FOG));
-      setRy(rf(0, Math.PI));
-    } else {
-      setZ(z - delta * knobs.leftTempo * TREADMILL_SPEED);
-    }
-  });
+const Tree = ({ xMin, xMax }: { xMin: number; xMax: number }) => {
+  const x = useRef(rf(xMin, xMax) * rp([-1, 1]));
+  const ry = useRef(rf(0, Math.PI));
+  const z0 = useRef(rf(0, 2 * FOG));
+  const time = useTime("left");
+  const z = mod(z0.current - time * 10, 2 * FOG) - FOG;
   return (
-    <group position={[x, 0, z]} rotation={[0, ry, 0]}>
-      {children}
+    <group position={[x.current, 0, z]} rotation={[0, ry.current, 0]}>
+      <Oak1 />
     </group>
   );
 };
@@ -110,9 +95,7 @@ export const World = () => {
       {Array(10)
         .fill(null)
         .map((_, i) => (
-          <Treaded key={i} xMin={4} xMax={15}>
-            <Oak1 />
-          </Treaded>
+          <Tree key={i} xMin={4} xMax={15} />
         ))}
       <Treadmill>
         <Terrain />

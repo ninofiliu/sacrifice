@@ -1,3 +1,6 @@
+import { useFrame } from "@react-three/fiber";
+import { useState } from "react";
+
 import { objEach, objMap, x } from "./shorts";
 
 const buttonsMap = {
@@ -22,6 +25,15 @@ const offsetsMap = {
 } as const;
 
 export const offsets = objMap(offsetsMap, () => 0);
+
+export const useTime = (key: keyof typeof offsetsMap) => {
+  const [time, setTime] = useState(0);
+  useFrame((_, delta) => {
+    setTime(time + knobs[`${key}Tempo`] * delta + 0.1 * offsets[key]);
+    offsets[key] = 0;
+  });
+  return time;
+};
 
 (async () => {
   const access = await navigator.requestMIDIAccess();

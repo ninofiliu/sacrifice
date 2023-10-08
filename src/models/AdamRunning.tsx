@@ -27,7 +27,7 @@ export const AdamRunning = (props: Omit<GroupProps, "ref" | "dispose">) => {
     if (!action) return;
     action.timeScale = knobs.leftTempo;
     action.time += 0.01 * offsets.left;
-    offsets.left = 0;
+    // offsets.left = 0;
   });
   return (
     <group {...props} ref={group} dispose={null}>
