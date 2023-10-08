@@ -1,17 +1,15 @@
 import { Environment, OrbitControls, useTexture } from "@react-three/drei";
-import { useFrame } from "@react-three/fiber";
 import { Bloom, EffectComposer } from "@react-three/postprocessing";
 import type { ReactNode } from "react";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 
-import { knobs, useTime } from "../ddj";
+import { useTime } from "../ddj";
 import { mod, rf, rp } from "../shorts";
 import { AdamRunning } from "./AdamRunning";
 import { Oak1 } from "./trees";
 import { Wolf } from "./Wolf";
 
 const TREADMILL_SPEED = 5;
-const TREADMILL_LENGTH = 30;
 const FOG = 25;
 
 const Terrain = () => {
@@ -33,13 +31,11 @@ const Terrain = () => {
   return Array(n)
     .fill(null)
     .map((_, i) => (
-      <group key={i} position={[0, 0, ((i + 0.5) * TREADMILL_LENGTH) / n]}>
+      <group key={i} position={[0, 0, ((i + 0.5) * FOG) / n]}>
         {[-1, 0, 1].map((ix) => (
-          <group key={ix} position={[(ix * TREADMILL_LENGTH) / n, 0, 0]}>
+          <group key={ix} position={[(ix * FOG) / n, 0, 0]}>
             <mesh rotation={[-Math.PI / 2, 0, 0]}>
-              <planeGeometry
-                args={[TREADMILL_LENGTH / n, TREADMILL_LENGTH / n, 100, 100]}
-              />
+              <planeGeometry args={[FOG / n, FOG / n, 100, 100]} />
               {Math.random() < 1 ? (
                 <meshStandardMaterial
                   {...forestGroundMaps}
@@ -60,15 +56,13 @@ const Terrain = () => {
 };
 
 const Treadmill = ({ children }: { children: ReactNode }) => {
-  const [z, setZ] = useState(0);
-  useFrame((_, delta) => {
-    setZ((z + delta * knobs.rightTempo * TREADMILL_SPEED) % TREADMILL_LENGTH);
-  });
+  const time = useTime("left");
+  const z = mod(-time * TREADMILL_SPEED, FOG);
   return (
     <>
-      <group position={[0, 0, -z - TREADMILL_LENGTH]}>{children}</group>
-      <group position={[0, 0, -z]}>{children}</group>
-      <group position={[0, 0, -z + TREADMILL_LENGTH]}>{children}</group>
+      <group position={[0, 0, z - FOG]}>{children}</group>
+      <group position={[0, 0, z]}>{children}</group>
+      <group position={[0, 0, z + FOG]}>{children}</group>
     </>
   );
 };
@@ -78,7 +72,7 @@ const Tree = ({ xMin, xMax }: { xMin: number; xMax: number }) => {
   const ry = useRef(rf(0, Math.PI));
   const z0 = useRef(rf(0, 2 * FOG));
   const time = useTime("left");
-  const z = mod(z0.current - time * 10, 2 * FOG) - FOG;
+  const z = mod(z0.current - time * TREADMILL_SPEED, 2 * FOG) - FOG;
   return (
     <group position={[x.current, 0, z]} rotation={[0, ry.current, 0]}>
       <Oak1 />
