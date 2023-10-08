@@ -5,7 +5,7 @@ import * as THREE from "three";
 
 import { height, width } from "./consts";
 import { startMosh } from "./mosh";
-import { World } from "./World";
+import { World } from "./models/World";
 
 extend(THREE);
 

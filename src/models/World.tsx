@@ -4,9 +4,9 @@ import { Bloom, EffectComposer } from "@react-three/postprocessing";
 import type { ReactNode } from "react";
 import { useState } from "react";
 
+import { knobs } from "../ddj";
+import { rf, rp } from "../shorts";
 import { AdamRunning } from "./AdamRunning";
-import { knobs } from "./ddj";
-import { rf, rp } from "./shorts";
 import { Oak1 } from "./trees";
 import { Wolf } from "./Wolf";
 

@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import type { Group, Material, Object3DEventMap, SkinnedMesh } from "three";
 import type { GLTF } from "three-stdlib";
 
-import { knobs, offsets } from "./ddj";
+import { knobs, offsets } from "../ddj";
 
 useGLTF.preload("/AdamRunning.glb");
 
