@@ -1,68 +1,24 @@
-import { Environment, OrbitControls, useTexture } from "@react-three/drei";
+import { Environment, OrbitControls } from "@react-three/drei";
 import { Bloom, EffectComposer } from "@react-three/postprocessing";
 import type { ReactNode } from "react";
 import { useRef } from "react";
 
+import { FOG, TREADMILL_SPEED } from "../consts";
 import { useTime } from "../ddj";
 import { mod, rf, rp } from "../shorts";
 import { AdamRunning } from "./AdamRunning";
+import { Terrain } from "./Terrain";
 import { Oak1 } from "./trees";
 import { Wolf } from "./Wolf";
-
-const TREADMILL_SPEED = 5;
-const FOG = 25;
-
-const Terrain = () => {
-  const n = 3;
-  const forestGroundMaps = useTexture({
-    map: "/textures/forest_ground_04_diff_2k.jpg",
-    aoMap: "/textures/forest_ground_04_ao_2k.jpg",
-    displacementMap: "/textures/forest_ground_04_disp_2k.jpg",
-    roughnessMap: "/textures/forest_ground_04_rough_2k.jpg",
-    normalMap: "/textures/forest_ground_04_nor_dx_2k.jpg",
-  });
-  const mudCrackedMaps = useTexture({
-    map: "/textures/mud_cracked_dry_03_diff_2k.jpg",
-    aoMap: "/textures/mud_cracked_dry_03_ao_2k.jpg",
-    displacementMap: "/textures/mud_cracked_dry_03_disp_2k.jpg",
-    roughnessMap: "/textures/mud_cracked_dry_03_rough_2k.jpg",
-    normalMap: "/textures/mud_cracked_dry_03_nor_dx_2k.jpg",
-  });
-  return Array(n)
-    .fill(null)
-    .map((_, i) => (
-      <group key={i} position={[0, 0, ((i + 0.5) * FOG) / n]}>
-        {[-1, 0, 1].map((ix) => (
-          <group key={ix} position={[(ix * FOG) / n, 0, 0]}>
-            <mesh rotation={[-Math.PI / 2, 0, 0]}>
-              <planeGeometry args={[FOG / n, FOG / n, 100, 100]} />
-              {Math.random() < 1 ? (
-                <meshStandardMaterial
-                  {...forestGroundMaps}
-                  displacementScale={3}
-                  displacementBias={-0.5}
-                />
-              ) : (
-                <meshStandardMaterial
-                  {...mudCrackedMaps}
-                  displacementScale={0.1}
-                />
-              )}
-            </mesh>
-          </group>
-        ))}
-      </group>
-    ));
-};
 
 const Treadmill = ({ children }: { children: ReactNode }) => {
   const time = useTime("left");
   const z = mod(-time * TREADMILL_SPEED, FOG);
   return (
     <>
-      <group position={[0, 0, z - FOG]}>{children}</group>
-      <group position={[0, 0, z]}>{children}</group>
-      <group position={[0, 0, z + FOG]}>{children}</group>
+      <group position={[0, 0, z - 1.5 * FOG]}>{children}</group>
+      <group position={[0, 0, z - 0.5 * FOG]}>{children}</group>
+      <group position={[0, 0, z + 0.5 * FOG]}>{children}</group>
     </>
   );
 };

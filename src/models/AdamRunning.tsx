@@ -1,10 +1,10 @@
-import { useAnimations, useGLTF } from "@react-three/drei";
-import { type GroupProps, useFrame } from "@react-three/fiber";
-import { useEffect, useRef } from "react";
+import { useGLTF } from "@react-three/drei";
+import { type GroupProps } from "@react-three/fiber";
+import { useRef } from "react";
 import type { Group, Material, Object3DEventMap, SkinnedMesh } from "three";
 import type { GLTF } from "three-stdlib";
 
-import { knobs, offsets } from "../ddj";
+import { useControlledAnimations } from "../useControlledAnimations";
 
 useGLTF.preload("/AdamRunning.glb");
 
@@ -16,19 +16,12 @@ export const AdamRunning = (props: Omit<GroupProps, "ref" | "dispose">) => {
     nodes: Record<string, SkinnedMesh>;
     materials: Record<string, Material>;
   };
-  const { actions } = useAnimations(animations, group);
-  useEffect(() => {
-    const action = actions["Armature|mixamo.com|Layer0"];
-    if (!action) return;
-    action.play();
-  }, [actions]);
-  useFrame(() => {
-    const action = actions["Armature|mixamo.com|Layer0"];
-    if (!action) return;
-    action.timeScale = knobs.leftTempo;
-    action.time += 0.01 * offsets.left;
-    // offsets.left = 0;
-  });
+  useControlledAnimations(
+    animations,
+    group,
+    "left",
+    "Armature|mixamo.com|Layer0"
+  );
   return (
     <group {...props} ref={group} dispose={null}>
       <group name="Scene">

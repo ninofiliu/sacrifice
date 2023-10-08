@@ -1,10 +1,10 @@
-import { useAnimations, useGLTF } from "@react-three/drei";
-import { type GroupProps, useFrame } from "@react-three/fiber";
-import { useEffect, useRef } from "react";
+import { useGLTF } from "@react-three/drei";
+import { type GroupProps } from "@react-three/fiber";
+import { useRef } from "react";
 import type { Group, Material, Object3DEventMap, SkinnedMesh } from "three";
 import type { GLTF } from "three-stdlib";
 
-import { knobs } from "../ddj";
+import { useControlledAnimations } from "../useControlledAnimations";
 
 useGLTF.preload("/Wolf.glb");
 
@@ -14,20 +14,7 @@ export const Wolf = (props: Omit<GroupProps, "ref" | "dispose">) => {
     nodes: Record<string, SkinnedMesh>;
     materials: Record<string, Material>;
   };
-  const { actions } = useAnimations(animations, group);
-  useEffect(() => {
-    const action = actions["01_Run"];
-    if (!action) return;
-    action.play();
-  }, [actions]);
-  useFrame(() => {
-    const action = actions["01_Run"];
-    if (!action) return;
-    action.timeScale = knobs.rightTempo;
-  });
-  useEffect(() => {
-    actions["01_Run"]?.play();
-  }, [actions]);
+  useControlledAnimations(animations, group, "right", "01_Run");
   return (
     <group {...props} ref={group} dispose={null}>
       <group name="Scene">

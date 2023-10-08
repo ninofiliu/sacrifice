@@ -1,9 +1,7 @@
 - [ ] glitch materials
 - [ ] randomize adam & wolf positions
 - [ ] add rocks
-- [ ] connect pioneer
 - [ ] cam controls
-- [ ] speed controls
 - [ ] call gigi
 - [ ] optimize
 - [ ] job top
