@@ -1,39 +1,26 @@
 import { objEach, objMap, x } from "./shorts";
 
-type PressedMap<K extends string> = Record<K, [number, number]>;
-type SideButtons = "play" | "cue" | "shift" | "sync" | "headphones";
+const buttonsMap = {
+  leftPlay: [144, 11],
+  leftCue: [144, 12],
+  rightPlay: [144, 11],
+  rightCue: [144, 12],
+} as const;
 
-const leftPressedMap: PressedMap<SideButtons> = {
-  play: [144, 11],
-  cue: [144, 12],
-  shift: [144, 63],
-  sync: [144, 88],
-  headphones: [144, 84],
-};
-export const leftPressed = objMap(leftPressedMap, () => false);
+export const buttons = objMap(buttonsMap, () => false);
 
-const rightPressedMap: PressedMap<SideButtons> = {
-  play: [145, 11],
-  cue: [145, 12],
-  shift: [145, 63],
-  sync: [145, 88],
-  headphones: [145, 84],
-};
-export const rightPressed = objMap(rightPressedMap, () => false);
+const knobsMap = {
+  leftTempo: [176, 0],
+} as const;
 
-const listenPressed = <K extends string>(
-  a: number,
-  b: number,
-  c: number,
-  map: PressedMap<K>,
-  pressed: Record<K, boolean>
-) => {
-  objEach(map, (k, [aa, bb]) => {
-    if (!(a == aa && b == bb)) return;
-    if (c === 127) pressed[k] = true;
-    if (c === 0) pressed[k] = false;
-  });
-};
+export const knobs = objMap(knobsMap, () => 0);
+
+const offsetsMap = {
+  left: [176, 33],
+  right: [177, 33],
+} as const;
+
+export const offsets = objMap(offsetsMap, () => 0);
 
 (async () => {
   const access = await navigator.requestMIDIAccess();
@@ -41,9 +28,21 @@ const listenPressed = <K extends string>(
   input.addEventListener("midimessage", (evt) => {
     console.log(...evt.data);
     const [a, b, c] = evt.data;
-    listenPressed(a, b, c, leftPressedMap, leftPressed);
-    listenPressed(a, b, c, rightPressedMap, rightPressed);
 
-    console.log(JSON.stringify({ leftPressed, rightPressed }, null, 2));
+    objEach(buttonsMap, (k, [aa, bb]) => {
+      if (!(a === aa && b === bb)) return;
+      if (c === 0) buttons[k] = false;
+      if (c === 127) buttons[k] = true;
+    });
+
+    objEach(knobsMap, (k, [aa, bb]) => {
+      if (!(a === aa && b === bb)) return;
+      knobs[k] = c / 127;
+    });
+
+    objEach(offsetsMap, (k, [aa, bb]) => {
+      if (!(a === aa && b === bb)) return;
+      offsets[k] += c === 63 ? -1 : -1;
+    });
   });
 })();
