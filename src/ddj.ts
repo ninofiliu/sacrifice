@@ -16,7 +16,17 @@ export const buttons = objMap(buttonsMap, () => false);
 
 const knobsMap = {
   leftTempo: [176, 0],
+  leftHi: [176, 7],
+  leftMid: [176, 11],
+  leftBass: [176, 15],
+  leftFx: [176, 23],
+  leftVolume: [176, 19],
   rightTempo: [177, 0],
+  rightHi: [177, 7],
+  rightMid: [177, 11],
+  rightBass: [177, 15],
+  rightFx: [177, 23],
+  rightVolume: [177, 19],
 } as const;
 
 export const knobs = objMap(knobsMap, () => 0);

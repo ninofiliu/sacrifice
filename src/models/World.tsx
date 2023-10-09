@@ -1,8 +1,9 @@
-import { Environment, OrbitControls } from "@react-three/drei";
+import { Environment } from "@react-three/drei";
 import { Bloom, EffectComposer } from "@react-three/postprocessing";
 import type { ReactNode } from "react";
 import { useRef } from "react";
 
+import { Cam } from "../Cam";
 import { FOG, TREADMILL_SPEED } from "../consts";
 import { useTime } from "../ddj";
 import { mod, rf, rp } from "../shorts";
@@ -58,7 +59,7 @@ export const World = () => {
         <Bloom luminanceThreshold={100} />
       </EffectComposer>
 
-      <OrbitControls />
+      <Cam />
       <axesHelper />
     </>
   );
