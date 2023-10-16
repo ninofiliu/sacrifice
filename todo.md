@@ -1,7 +1,14 @@
-- [ ] glitch materials
-- [ ] randomize adam & wolf positions
-- [ ] add rocks
-- [ ] cam controls
-- [ ] call gigi
-- [ ] optimize
-- [ ] job top
+# todo
+
+## all
+
+- glitch materials
+- randomize adam & wolf positions
+- add rocks
+- optimize
+
+## to plug
+
+- jog wheel top
+- crossfader
+- volumes
