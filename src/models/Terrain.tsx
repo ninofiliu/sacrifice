@@ -1,8 +1,23 @@
 import { useTexture } from "@react-three/drei";
+import type { ReactNode } from "react";
 
-import { FOG } from "../consts";
+import { FOG, TREADMILL_SPEED } from "../consts";
+import { useTime } from "../ddj";
+import { mod } from "../shorts";
 
-export const Terrain = () => {
+const Treadmill = ({ children }: { children: ReactNode }) => {
+  const time = useTime("left");
+  const z = mod(-time * TREADMILL_SPEED, FOG);
+  return (
+    <>
+      <group position={[0, 0, z - 1.5 * FOG]}>{children}</group>
+      <group position={[0, 0, z - 0.5 * FOG]}>{children}</group>
+      <group position={[0, 0, z + 0.5 * FOG]}>{children}</group>
+    </>
+  );
+};
+
+const TerrainPart = () => {
   const n = 3;
   const forestGroundMaps = useTexture({
     map: "/textures/forest_ground_04_diff_2k.jpg",
@@ -44,3 +59,9 @@ export const Terrain = () => {
       </group>
     ));
 };
+
+export const Terrain = () => (
+  <Treadmill>
+    <TerrainPart />
+  </Treadmill>
+);

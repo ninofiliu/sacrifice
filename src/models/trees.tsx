@@ -1,10 +1,15 @@
 import { useGLTF } from "@react-three/drei";
+import { useRef } from "react";
 import type { Material, SkinnedMesh } from "three";
 import type { GLTF } from "three-stdlib";
 
+import { FOG, TREADMILL_SPEED } from "../consts";
+import { useTime } from "../ddj";
+import { mod, rf, rp } from "../shorts";
+
 useGLTF.preload("/oaks.glb");
 
-export function Oak1() {
+export const Oak1 = () => {
   const { nodes, materials } = useGLTF("/oaks.glb") as GLTF & {
     nodes: Record<string, SkinnedMesh>;
     materials: Record<string, Material>;
@@ -25,9 +30,9 @@ export function Oak1() {
       />
     </group>
   );
-}
+};
 
-export function Oak2() {
+export const Oak2 = () => {
   const { nodes, materials } = useGLTF("/oaks.glb") as GLTF & {
     nodes: Record<string, SkinnedMesh>;
     materials: Record<string, Material>;
@@ -46,9 +51,9 @@ export function Oak2() {
       />
     </group>
   );
-}
+};
 
-export function Oak3() {
+export const Oak3 = () => {
   const { nodes, materials } = useGLTF("/oaks.glb") as GLTF & {
     nodes: Record<string, SkinnedMesh>;
     materials: Record<string, Material>;
@@ -67,4 +72,27 @@ export function Oak3() {
       />
     </group>
   );
-}
+};
+
+export const Tree = ({ xMin, xMax }: { xMin: number; xMax: number }) => {
+  const x = useRef(rf(xMin, xMax) * rp([-1, 1]));
+  const ry = useRef(rf(0, Math.PI));
+  const z0 = useRef(rf(0, 2 * FOG));
+  const time = useTime("left");
+  const z = mod(z0.current - time * TREADMILL_SPEED, 2 * FOG) - FOG;
+  return (
+    <group position={[x.current, 0, z]} rotation={[0, ry.current, 0]}>
+      <Oak1 />
+    </group>
+  );
+};
+
+export const Trees = () => (
+  <>
+    {Array(10)
+      .fill(null)
+      .map((_, i) => (
+        <Tree key={i} xMin={4} xMax={15} />
+      ))}
+  </>
+);
