@@ -4,8 +4,8 @@ import { createRoot, extend } from "@react-three/fiber";
 import * as THREE from "three";
 
 import { height, width } from "./consts";
-import { startMosh } from "./mosh";
 import { World } from "./models/World";
+import { startMosh } from "./mosh";
 
 extend(THREE);
 
@@ -23,4 +23,4 @@ dst.height = height;
 
 startMosh(src, dst);
 
-document.body.append(src, dst);
+document.body.append(dst);

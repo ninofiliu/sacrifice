@@ -29,13 +29,13 @@ const knobsMap = {
   rightVolume: [177, 19],
 } as const;
 
-export const knobs = objMap(knobsMap, () => 0);
+export const knobs = objMap(knobsMap, () => 0.5);
 
 const offsetsMap = {
   left: [176, 33],
   right: [177, 33],
 } as const;
-const offsets = objMap(offsetsMap, () => 0);
+const offsets = objMap(offsetsMap, () => 0.5);
 const times = {
   left: 0,
   right: 0,
