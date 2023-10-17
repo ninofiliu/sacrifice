@@ -5,4 +5,3 @@ optimize
 plug jog wheel top
 plug crossfader
 plug volumes
-jog right trees
