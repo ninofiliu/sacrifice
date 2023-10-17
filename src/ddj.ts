@@ -2,7 +2,7 @@ import { useFrame } from "@react-three/fiber";
 import { useState } from "react";
 
 import { JOG_SENSITIVITY } from "./consts";
-import { equals, objEach, objMap, x } from "./shorts";
+import { objEach, objMap, x } from "./shorts";
 import type { Lat } from "./types";
 
 const buttonsMap = {
@@ -35,7 +35,6 @@ export const switches = objMap(buttonsMap, () => false);
 export const useSwitches = () => {
   const [reactSwitches, setReactSwitches] = useState(switches);
   useFrame(() => {
-    if (equals(reactSwitches, switches)) return;
     setReactSwitches({ ...switches });
   });
   return reactSwitches;
@@ -103,7 +102,6 @@ export const useTime = (lat: Lat) => {
       if (c === 0) {
         buttons[k] = false;
         switches[k] = !switches[k];
-        console.log(k, switches);
       }
       if (c === 127) buttons[k] = true;
     });

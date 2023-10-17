@@ -4,6 +4,7 @@ import { useRef } from "react";
 import type { Group, Material, Object3DEventMap, SkinnedMesh } from "three";
 import type { GLTF } from "three-stdlib";
 
+import { useSwitches } from "../ddj";
 import { useControlledAnimations } from "../useControlledAnimations";
 
 useGLTF.preload("/Wolf.glb");
@@ -15,6 +16,9 @@ export const Wolf = (props: Omit<GroupProps, "ref" | "dispose">) => {
     materials: Record<string, Material>;
   };
   useControlledAnimations(animations, group, "right", "01_Run");
+
+  const switches = useSwitches();
+
   return (
     <group {...props} ref={group} dispose={null}>
       <group name="Scene">
@@ -23,15 +27,25 @@ export const Wolf = (props: Omit<GroupProps, "ref" | "dispose">) => {
           <skinnedMesh
             name="Wolf1_Material__wolf_col_tga_0"
             geometry={nodes.Wolf1_Material__wolf_col_tga_0.geometry}
-            material={materials.Wolf_1}
             skeleton={nodes.Wolf1_Material__wolf_col_tga_0.skeleton}
-          />
+          >
+            {switches.rightPad4 ? (
+              <meshBasicMaterial color="black" wireframe={switches.rightPad5} />
+            ) : (
+              <primitive object={materials.Wolf_1} />
+            )}
+          </skinnedMesh>
           <skinnedMesh
             name="Wolf2_fur__fella3_jpg_001_0"
             geometry={nodes.Wolf2_fur__fella3_jpg_001_0.geometry}
-            material={materials.Wolf_Fur}
             skeleton={nodes.Wolf2_fur__fella3_jpg_001_0.skeleton}
-          />
+          >
+            {switches.rightPad6 ? (
+              <meshBasicMaterial color="white" wireframe={switches.rightPad7} />
+            ) : (
+              <primitive object={materials.Wolf_Fur} />
+            )}
+          </skinnedMesh>
           <skinnedMesh
             name="Wolf3_claws_0"
             geometry={nodes.Wolf3_claws_0.geometry}
