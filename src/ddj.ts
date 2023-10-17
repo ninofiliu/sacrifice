@@ -2,17 +2,44 @@ import { useFrame } from "@react-three/fiber";
 import { useState } from "react";
 
 import { JOG_SENSITIVITY } from "./consts";
-import { objEach, objMap, x } from "./shorts";
+import { equals, objEach, objMap, x } from "./shorts";
 import type { Lat } from "./types";
 
 const buttonsMap = {
   leftPlay: [144, 11],
   leftCue: [144, 12],
+  leftPad0: [151, 0],
+  leftPad1: [151, 1],
+  leftPad2: [151, 2],
+  leftPad3: [151, 3],
+  leftPad4: [151, 4],
+  leftPad5: [151, 5],
+  leftPad6: [151, 6],
+  leftPad7: [151, 7],
   rightPlay: [144, 11],
   rightCue: [144, 12],
+  rightPad0: [153, 0],
+  rightPad1: [153, 1],
+  rightPad2: [153, 2],
+  rightPad3: [153, 3],
+  rightPad4: [153, 4],
+  rightPad5: [153, 5],
+  rightPad6: [153, 6],
+  rightPad7: [153, 7],
 } as const;
 
 export const buttons = objMap(buttonsMap, () => false);
+
+export const switches = objMap(buttonsMap, () => false);
+
+export const useSwitches = () => {
+  const [reactSwitches, setReactSwitches] = useState(switches);
+  useFrame(() => {
+    if (equals(reactSwitches, switches)) return;
+    setReactSwitches({ ...switches });
+  });
+  return reactSwitches;
+};
 
 const knobsMap = {
   leftTempo: [176, 0],
@@ -73,7 +100,11 @@ export const useTime = (lat: Lat) => {
 
     objEach(buttonsMap, (k, [aa, bb]) => {
       if (!(a === aa && b === bb)) return;
-      if (c === 0) buttons[k] = false;
+      if (c === 0) {
+        buttons[k] = false;
+        switches[k] = !switches[k];
+        console.log(k, switches);
+      }
       if (c === 127) buttons[k] = true;
     });
 

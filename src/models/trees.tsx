@@ -4,7 +4,7 @@ import type { Material, SkinnedMesh } from "three";
 import type { GLTF } from "three-stdlib";
 
 import { FOG, TREADMILL_SPEED } from "../consts";
-import { useTime } from "../ddj";
+import { useSwitches, useTime } from "../ddj";
 import { mod, rf, rp } from "../shorts";
 
 useGLTF.preload("/oaks.glb");
@@ -14,14 +14,23 @@ export const Oak1 = () => {
     nodes: Record<string, SkinnedMesh>;
     materials: Record<string, Material>;
   };
+
+  const switches = useSwitches();
+
   return (
     <group dispose={null} scale={0.1}>
-      <mesh
-        geometry={nodes.structure.geometry}
-        material={materials.bark}
-        rotation={[Math.PI / 2, 0, 0]}
-      >
-        {/* <meshStandardMaterial color={0xff0000} wireframe /> */}
+      <mesh geometry={nodes.structure.geometry} rotation={[Math.PI / 2, 0, 0]}>
+        {switches.rightPad0 ? (
+          <meshBasicMaterial color="black" wireframe />
+        ) : switches.rightPad1 ? (
+          <meshBasicMaterial color="red" wireframe />
+        ) : switches.rightPad2 ? (
+          <meshBasicMaterial color="white" wireframe />
+        ) : switches.rightPad3 ? (
+          <meshStandardMaterial metalness={1} roughness={0} />
+        ) : (
+          <primitive object={materials.bark} />
+        )}
       </mesh>
       <mesh
         geometry={nodes.foliage.geometry}
@@ -78,7 +87,7 @@ export const Tree = ({ xMin, xMax }: { xMin: number; xMax: number }) => {
   const x = useRef(rf(xMin, xMax) * rp([-1, 1]));
   const ry = useRef(rf(0, Math.PI));
   const z0 = useRef(rf(0, 2 * FOG));
-  const time = useTime("left");
+  const time = useTime("right");
   const z = mod(z0.current - time * TREADMILL_SPEED, 2 * FOG) - FOG;
   return (
     <group position={[x.current, 0, z]} rotation={[0, ry.current, 0]}>

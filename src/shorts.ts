@@ -25,3 +25,6 @@ export const rf = (min: number, max: number) =>
 export const rp = <T>(args: T[]) => args[~~rf(0, args.length)];
 
 export const mod = (a: number, b: number) => ((a % b) + b) % b;
+
+export const equals = (a: unknown, b: unknown) =>
+  JSON.stringify(a) === JSON.stringify(b);
