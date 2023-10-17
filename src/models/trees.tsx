@@ -22,21 +22,17 @@ export const Oak1 = () => {
       <mesh geometry={nodes.structure.geometry} rotation={[Math.PI / 2, 0, 0]}>
         {switches.rightPad0 ? (
           <meshBasicMaterial color="black" wireframe />
-        ) : switches.rightPad1 ? (
-          <meshBasicMaterial color="red" wireframe />
-        ) : switches.rightPad2 ? (
-          <meshBasicMaterial color="white" wireframe />
-        ) : switches.rightPad3 ? (
-          <meshStandardMaterial metalness={1} roughness={0} />
         ) : (
           <primitive object={materials.bark} />
         )}
       </mesh>
-      <mesh
-        geometry={nodes.foliage.geometry}
-        material={materials.foliage}
-        rotation={[Math.PI / 2, 0, 0]}
-      />
+      <mesh geometry={nodes.foliage.geometry} rotation={[Math.PI / 2, 0, 0]}>
+        {switches.rightPad1 ? (
+          <meshBasicMaterial color="red" wireframe />
+        ) : (
+          <primitive object={materials.foliage} />
+        )}
+      </mesh>
     </group>
   );
 };
