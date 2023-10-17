@@ -57,10 +57,14 @@ export const useTime = (lat: Lat) => {
 };
 
 (async () => {
+  console.log("[MIDI] requestig access...");
   const access = await navigator.requestMIDIAccess();
-  const input = x(access.inputs.get("input-0"));
+  console.log("[MIDI] finding input...");
+  const input = x(
+    [...access.inputs.values()].find((e) => e.name === "DDJ-200 MIDI 1")
+  );
   input.addEventListener("midimessage", (evt) => {
-    console.log(...evt.data);
+    console.log("[MIDI] event", ...evt.data);
     const [a, b, c] = evt.data;
 
     objEach(buttonsMap, (k, [aa, bb]) => {

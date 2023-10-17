@@ -24,3 +24,14 @@ dst.height = height;
 startMosh(src, dst);
 
 document.body.append(dst);
+
+let fps = 0;
+const loop = () => {
+  fps++;
+  requestAnimationFrame(loop);
+};
+loop();
+setInterval(() => {
+  console.log("fps", fps);
+  fps = 0;
+}, 1000);
