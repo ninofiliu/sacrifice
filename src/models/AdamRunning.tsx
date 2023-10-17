@@ -73,21 +73,38 @@ export const AdamRunning = (props: Omit<GroupProps, "ref" | "dispose">) => {
           <skinnedMesh
             name="Ch08_Hoodie"
             geometry={nodes.Ch08_Hoodie.geometry}
-            material={materials.Ch08_body1}
             skeleton={nodes.Ch08_Hoodie.skeleton}
-          />
+          >
+            {switches.leftPad1 ? (
+              <meshBasicMaterial color="white" wireframe />
+            ) : (
+              <primitive object={materials.Ch08_body1} />
+            )}
+          </skinnedMesh>
           <skinnedMesh
             name="Ch08_Pants"
             geometry={nodes.Ch08_Pants.geometry}
             material={materials.Ch08_body1}
             skeleton={nodes.Ch08_Pants.skeleton}
-          />
+          >
+            {switches.leftPad2 ? (
+              <meshBasicMaterial color="white" wireframe />
+            ) : (
+              <primitive object={materials.Ch08_body1} />
+            )}
+          </skinnedMesh>
           <skinnedMesh
             name="Ch08_Sneakers"
             geometry={nodes.Ch08_Sneakers.geometry}
             material={materials.Ch08_body1}
             skeleton={nodes.Ch08_Sneakers.skeleton}
-          />
+          >
+            {switches.leftPad3 ? (
+              <meshBasicMaterial color="white" wireframe />
+            ) : (
+              <primitive object={materials.Ch08_body1} />
+            )}
+          </skinnedMesh>
         </group>
       </group>
     </group>
