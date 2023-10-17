@@ -61,7 +61,11 @@ export const useTime = (lat: Lat) => {
   const access = await navigator.requestMIDIAccess();
   console.log("[MIDI] finding input...");
   const input = x(
-    [...access.inputs.values()].find((e) => e.name === "DDJ-200 MIDI 1")
+    [...access.inputs.values()].find((e) =>
+      // DDJ-200 on windows
+      // DDJ-200 MIDI 1
+      e.name?.includes("DDJ-200")
+    )
   );
   input.addEventListener("midimessage", (evt) => {
     console.log("[MIDI] event", ...evt.data);

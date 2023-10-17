@@ -4,7 +4,7 @@ import { Bloom, EffectComposer } from "@react-three/postprocessing";
 import { Cam } from "../Cam";
 import { AdamRunning } from "./AdamRunning";
 import { Terrain } from "./Terrain";
-import { Trees } from "./trees";
+import { Trees } from "./Trees";
 import { Wolf } from "./Wolf";
 
 export const World = () => {
