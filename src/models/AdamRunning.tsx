@@ -4,6 +4,7 @@ import { useRef } from "react";
 import type { Group, Material, Object3DEventMap, SkinnedMesh } from "three";
 import type { GLTF } from "three-stdlib";
 
+import { useSwitches } from "../ddj";
 import { useControlledAnimations } from "../useControlledAnimations";
 
 useGLTF.preload("/AdamRunning.glb");
@@ -22,6 +23,9 @@ export const AdamRunning = (props: Omit<GroupProps, "ref" | "dispose">) => {
     "left",
     "Armature|mixamo.com|Layer0"
   );
+
+  const switches = useSwitches();
+
   return (
     <group {...props} ref={group} dispose={null}>
       <group name="Scene">
@@ -30,15 +34,25 @@ export const AdamRunning = (props: Omit<GroupProps, "ref" | "dispose">) => {
           <skinnedMesh
             name="Ch08_Beard"
             geometry={nodes.Ch08_Beard.geometry}
-            material={materials.Ch08_hair}
             skeleton={nodes.Ch08_Beard.skeleton}
-          />
+          >
+            {switches.leftPad0 ? (
+              <meshBasicMaterial color="black" />
+            ) : (
+              <primitive object={materials.Ch08_hair} />
+            )}
+          </skinnedMesh>
           <skinnedMesh
             name="Ch08_Body"
             geometry={nodes.Ch08_Body.geometry}
-            material={materials.Ch08_body}
             skeleton={nodes.Ch08_Body.skeleton}
-          />
+          >
+            {switches.leftPad0 ? (
+              <meshBasicMaterial color="black" />
+            ) : (
+              <primitive object={materials.Ch08_body} />
+            )}
+          </skinnedMesh>
           <skinnedMesh
             name="Ch08_Eyelashes"
             geometry={nodes.Ch08_Eyelashes.geometry}
@@ -48,9 +62,14 @@ export const AdamRunning = (props: Omit<GroupProps, "ref" | "dispose">) => {
           <skinnedMesh
             name="Ch08_Hair"
             geometry={nodes.Ch08_Hair.geometry}
-            material={materials.Ch08_hair}
             skeleton={nodes.Ch08_Hair.skeleton}
-          />
+          >
+            {switches.leftPad0 ? (
+              <meshBasicMaterial color="black" />
+            ) : (
+              <primitive object={materials.Ch08_hair} />
+            )}
+          </skinnedMesh>
           <skinnedMesh
             name="Ch08_Hoodie"
             geometry={nodes.Ch08_Hoodie.geometry}
