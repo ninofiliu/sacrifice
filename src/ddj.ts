@@ -55,6 +55,7 @@ const knobsMap = {
   rightBass: [177, 15],
   rightFx: [182, 24],
   rightVolume: [177, 19],
+  crossfader: [182, 31],
 } as const;
 
 export const knobs = objMap(knobsMap, () => 0.5);

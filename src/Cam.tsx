@@ -54,6 +54,9 @@ export const Cam = () => {
       nextLookAt.addScaledVector(v, -1 + 2 * knobs[k])
     );
 
+    nextPosition.x *= -1 + 2 * knobs.crossfader;
+    nextLookAt.x *= -1 + 2 * knobs.crossfader;
+
     cam.current.position.set(nextPosition.x, nextPosition.y, nextPosition.z);
     cam.current.lookAt(nextLookAt);
   });
