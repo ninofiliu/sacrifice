@@ -5,7 +5,9 @@ import * as THREE from "three";
 import type { OrbitControls as OrbitControlsImpl } from "three-stdlib";
 
 import { knobs } from "./ddj";
-import { objEach } from "./shorts";
+import { objEach, objMap } from "./shorts";
+
+const initPosition = new THREE.Vector3(0, 1, -5);
 
 const positions = {
   leftHi: new THREE.Vector3(-0.06, 0.74, 1.99),
@@ -18,6 +20,12 @@ const positions = {
   rightFx: new THREE.Vector3(-1.71, 0.4, 1.19),
 } as const;
 
+const positionOffsets = objMap(positions, (_, v) =>
+  v.clone().sub(initPosition)
+);
+
+const initLookAt = new THREE.Vector3(0, 1, -4);
+
 const lookAts = {
   leftHi: new THREE.Vector3(-0.06, 0.74, 0.99),
   leftMid: new THREE.Vector3(1.23, 1.17, 0.09),
@@ -29,19 +37,22 @@ const lookAts = {
   rightFx: new THREE.Vector3(-0.85, 0.56, 0.7),
 } as const;
 
+const lookAtOffsets = objMap(lookAts, (_, v) => v.clone().sub(initLookAt));
+
 export const Cam = () => {
   const cam = useRef<THREE.PerspectiveCamera | null>(null);
 
   useFrame(() => {
     if (!cam.current) return;
-    const nextPosition = new THREE.Vector3(0, 1, -5);
-    const nextLookAt = new THREE.Vector3(0, 1, -4);
+    const nextPosition = initPosition.clone();
+    const nextLookAt = initLookAt.clone();
 
-    objEach(positions, (k, position) => {
-      const lookAt = lookAts[k];
-      nextPosition.lerp(position, -1 + 2 * knobs[k]);
-      nextLookAt.lerp(lookAt, -1 + 2 * knobs[k]);
-    });
+    objEach(positionOffsets, (k, v) =>
+      nextPosition.addScaledVector(v, -1 + 2 * knobs[k])
+    );
+    objEach(lookAtOffsets, (k, v) =>
+      nextLookAt.addScaledVector(v, -1 + 2 * knobs[k])
+    );
 
     cam.current.position.set(nextPosition.x, nextPosition.y, nextPosition.z);
     cam.current.lookAt(nextLookAt);
