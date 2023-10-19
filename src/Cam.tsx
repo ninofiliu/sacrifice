@@ -2,7 +2,8 @@ import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { useRef, useState } from "react";
 import * as THREE from "three";
-import type { OrbitControls as OrbitControlsImpl } from "three-stdlib";
+import { lerp } from "three/src/math/MathUtils.js";
+import { type OrbitControls as OrbitControlsImpl } from "three-stdlib";
 
 import { knobs } from "./ddj";
 import { objEach, objMap } from "./shorts";
@@ -55,12 +56,19 @@ export const Cam = () => {
       nextLookAt.addScaledVector(v, -1 + 2 * knobs[k])
     );
 
-    nextPosition.x *= -1 + 2 * knobs.crossfader;
-    nextLookAt.x *= -1 + 2 * knobs.crossfader;
+    nextPosition.applyAxisAngle(
+      new THREE.Vector3(0, 1, 0),
+      lerp(-Math.PI * 0.5, Math.PI * 0.5, knobs.crossfader)
+    );
 
     cam.current.position.set(nextPosition.x, nextPosition.y, nextPosition.z);
     cam.current.lookAt(nextLookAt);
-    setZoom(3 + (0.2 - 3) * knobs.leftVolume);
+    cam.current.position.addScaledVector(
+      nextLookAt.clone().sub(nextPosition),
+      knobs.rightVolume * 5
+    );
+
+    setZoom(lerp(0.3, 3, knobs.leftVolume));
   });
 
   return <PerspectiveCamera ref={cam} makeDefault zoom={zoom} />;

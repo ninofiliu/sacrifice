@@ -59,7 +59,6 @@ const knobsMap = {
 } as const;
 
 export const knobs = objMap(knobsMap, () => 0.5);
-knobs.crossfader = 0;
 
 const offsetsMap = {
   leftSide: [176, 33],
