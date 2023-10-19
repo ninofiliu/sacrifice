@@ -6,7 +6,7 @@ import * as THREE from "three";
 
 import { height, width } from "./consts";
 import { World } from "./models/World";
-import { startMosh } from "./mosh";
+import { x } from "./shorts";
 
 extend(THREE);
 
@@ -21,7 +21,11 @@ root.render(<World />);
 const dst = document.createElement("canvas");
 dst.width = width;
 dst.height = height;
-
-startMosh(src, dst);
-
 document.body.append(dst);
+
+const ctx = x(dst.getContext("2d"));
+const loop = () => {
+  ctx.drawImage(src, 0, 0);
+  requestAnimationFrame(loop);
+};
+loop();
