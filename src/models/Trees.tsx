@@ -55,7 +55,7 @@ export const Trees = () => (
     {Array(8)
       .fill(null)
       .map((_, i) => (
-        <Tree key={i} xMin={8} xMax={15} />
+        <Tree key={i} xMin={5} xMax={12} />
       ))}
   </>
 );

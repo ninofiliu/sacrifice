@@ -12,7 +12,7 @@ const initPosition = new THREE.Vector3(0, 1, -5);
 
 const positions = {
   leftHi: new THREE.Vector3(-0.06, 0.74, 1.99),
-  leftMid: new THREE.Vector3(0.49, 1.11, -0.58),
+  leftMid: new THREE.Vector3(3, 0.5, 0),
   leftBass: new THREE.Vector3(-0.18, 0.64, -1.06),
   leftFx: new THREE.Vector3(-1.27, -1.05, -2.23),
   rightHi: new THREE.Vector3(-0.52, -0.21, 0.04),
@@ -29,7 +29,7 @@ const initLookAt = new THREE.Vector3(0, 1, -4);
 
 const lookAts = {
   leftHi: new THREE.Vector3(-0.06, 0.74, 0.99),
-  leftMid: new THREE.Vector3(1.23, 1.17, 0.09),
+  leftMid: new THREE.Vector3(4, 0.5, 0),
   leftBass: new THREE.Vector3(-0.89, 0.48, -0.37),
   leftFx: new THREE.Vector3(-0.83, -0.33, -1.7),
   rightHi: new THREE.Vector3(-1.19, 0.45, 0.37),
@@ -65,7 +65,7 @@ export const Cam = () => {
     cam.current.lookAt(nextLookAt);
     cam.current.position.addScaledVector(
       nextLookAt.clone().sub(nextPosition),
-      knobs.rightVolume * 5
+      lerp(-3, 2, knobs.rightVolume)
     );
 
     setZoom(lerp(0.3, 3, knobs.leftVolume));
