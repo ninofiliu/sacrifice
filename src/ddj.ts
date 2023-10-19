@@ -74,11 +74,16 @@ const times = {
   right: 0,
 } as Record<Lat, number>;
 
+let t0 = performance.now();
 const loop = () => {
+  const t1 = performance.now();
+  const delta = t1 - t0;
+  t0 = t1;
+
   if (!switches.leftPlay && !buttons.leftJogTop)
-    times.left += (1 / 60) * knobs.leftTempo;
+    times.left += (delta / 1000) * knobs.leftTempo;
   if (!switches.rightPlay && !buttons.rightJogTop)
-    times.right += (1 / 60) * knobs.rightTempo;
+    times.right += (delta / 1000) * knobs.rightTempo;
   requestAnimationFrame(loop);
 };
 loop();
