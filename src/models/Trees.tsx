@@ -18,7 +18,7 @@ export const Oak1 = () => {
   const switches = useSwitches();
 
   return (
-    <group dispose={null} scale={0.1}>
+    <group dispose={null} scale={0.15}>
       <mesh geometry={nodes.structure.geometry} rotation={[Math.PI / 2, 0, 0]}>
         {switches.rightPad0 ? (
           <meshBasicMaterial color="black" wireframe />
@@ -94,10 +94,10 @@ export const Tree = ({ xMin, xMax }: { xMin: number; xMax: number }) => {
 
 export const Trees = () => (
   <>
-    {Array(10)
+    {Array(8)
       .fill(null)
       .map((_, i) => (
-        <Tree key={i} xMin={4} xMax={15} />
+        <Tree key={i} xMin={8} xMax={15} />
       ))}
   </>
 );

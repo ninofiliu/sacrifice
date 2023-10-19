@@ -8,7 +8,10 @@ if (logFps) {
   };
   loop();
   setInterval(() => {
-    console.log(`fps=${fps}, t=${~~(1000 / fps)}ms`);
+    const t = ~~(1000 / fps);
+    console.log(
+      `fps=${fps}, t=${~~(1000 / fps)}ms ${Array(t).fill(".").join("")}`
+    );
     fps = 0;
   }, 1000);
 }
