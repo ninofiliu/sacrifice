@@ -60,8 +60,10 @@ const knobsMap = {
 export const knobs = objMap(knobsMap, () => 0.5);
 
 const offsetsMap = {
-  left: [176, 33],
-  right: [177, 33],
+  leftSide: [176, 33],
+  leftTop: [176, 34],
+  rightSide: [177, 33],
+  rightTop: [177, 34],
 } as const;
 
 const offsets = objMap(offsetsMap, () => 0.5);
@@ -72,14 +74,16 @@ const times = {
 } as Record<Lat, number>;
 
 const loop = () => {
-  if (!switches.leftPlay) times.left += (1 / 60) * knobs.leftTempo;
-  if (!switches.rightPlay) times.right += (1 / 60) * knobs.rightTempo;
+  if (!switches.leftPlay && !buttons.leftJogTop)
+    times.left += (1 / 60) * knobs.leftTempo;
+  if (!switches.rightPlay && !buttons.rightJogTop)
+    times.right += (1 / 60) * knobs.rightTempo;
   requestAnimationFrame(loop);
 };
 loop();
 
 export const getTime = (lat: Lat) =>
-  times[lat] + JOG_SENSITIVITY * offsets[lat];
+  times[lat] + JOG_SENSITIVITY * (offsets[`${lat}Side`] + offsets[`${lat}Top`]);
 
 export const useTime = (lat: Lat) => {
   const [time, setTime] = useState(0);
@@ -90,7 +94,7 @@ export const useTime = (lat: Lat) => {
 };
 
 (async () => {
-  console.log("[MIDI] requestig access...");
+  console.log("[MIDI] requesting access...");
   const access = await navigator.requestMIDIAccess();
   console.log("[MIDI] finding input...");
   const input = x(
@@ -129,5 +133,6 @@ export const useTime = (lat: Lat) => {
     console.log("[MIDI] event", mappedTo, ...evt.data);
     if (mappedTo.length > 1)
       console.warn("[MIDI] mapped to several entities", ...evt.data, mappedTo);
+    if (mappedTo.length === 0) console.log("[MIDI] unmapped", ...evt.data);
   });
 })();
