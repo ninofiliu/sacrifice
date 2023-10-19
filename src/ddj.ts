@@ -8,6 +8,7 @@ import type { Lat } from "./types";
 const buttonsMap = {
   leftPlay: [144, 11],
   leftCue: [144, 12],
+  leftJogTop: [144, 54],
   leftPad0: [151, 0],
   leftPad1: [151, 1],
   leftPad2: [151, 2],
@@ -16,8 +17,9 @@ const buttonsMap = {
   leftPad5: [151, 5],
   leftPad6: [151, 6],
   leftPad7: [151, 7],
-  rightPlay: [144, 11],
-  rightCue: [144, 12],
+  rightPlay: [145, 11],
+  rightCue: [145, 12],
+  rightJogTop: [145, 54],
   rightPad0: [153, 0],
   rightPad1: [153, 1],
   rightPad2: [153, 2],
@@ -61,19 +63,24 @@ const offsetsMap = {
   left: [176, 33],
   right: [177, 33],
 } as const;
+
 const offsets = objMap(offsetsMap, () => 0.5);
+
 const times = {
   left: 0,
   right: 0,
 } as Record<Lat, number>;
+
 const loop = () => {
-  times.left += (1 / 60) * knobs.leftTempo;
-  times.right += (1 / 60) * knobs.rightTempo;
+  if (!switches.leftPlay) times.left += (1 / 60) * knobs.leftTempo;
+  if (!switches.rightPlay) times.right += (1 / 60) * knobs.rightTempo;
   requestAnimationFrame(loop);
 };
 loop();
+
 export const getTime = (lat: Lat) =>
   times[lat] + JOG_SENSITIVITY * offsets[lat];
+
 export const useTime = (lat: Lat) => {
   const [time, setTime] = useState(0);
   useFrame(() => {
@@ -94,11 +101,12 @@ export const useTime = (lat: Lat) => {
     )
   );
   input.addEventListener("midimessage", (evt) => {
-    console.log("[MIDI] event", ...evt.data);
+    const mappedTo: string[] = [];
     const [a, b, c] = evt.data;
 
     objEach(buttonsMap, (k, [aa, bb]) => {
       if (!(a === aa && b === bb)) return;
+      mappedTo.push(`button ${k}`);
       if (c === 0) {
         buttons[k] = false;
         switches[k] = !switches[k];
@@ -108,12 +116,18 @@ export const useTime = (lat: Lat) => {
 
     objEach(knobsMap, (k, [aa, bb]) => {
       if (!(a === aa && b === bb)) return;
+      mappedTo.push(`knob ${k}`);
       knobs[k] = c / 127;
     });
 
     objEach(offsetsMap, (k, [aa, bb]) => {
       if (!(a === aa && b === bb)) return;
+      mappedTo.push(`offset ${k}`);
       offsets[k] += c === 63 ? -1 : 1;
     });
+
+    console.log("[MIDI] event", mappedTo, ...evt.data);
+    if (mappedTo.length > 1)
+      console.warn("[MIDI] mapped to several entities", ...evt.data, mappedTo);
   });
 })();
