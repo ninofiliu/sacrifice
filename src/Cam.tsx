@@ -1,6 +1,6 @@
 import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import * as THREE from "three";
 import type { OrbitControls as OrbitControlsImpl } from "three-stdlib";
 
@@ -41,6 +41,7 @@ const lookAtOffsets = objMap(lookAts, (_, v) => v.clone().sub(initLookAt));
 
 export const Cam = () => {
   const cam = useRef<THREE.PerspectiveCamera | null>(null);
+  const [zoom, setZoom] = useState(1);
 
   useFrame(() => {
     if (!cam.current) return;
@@ -59,9 +60,10 @@ export const Cam = () => {
 
     cam.current.position.set(nextPosition.x, nextPosition.y, nextPosition.z);
     cam.current.lookAt(nextLookAt);
+    setZoom(3 + (0.2 - 3) * knobs.leftVolume);
   });
 
-  return <PerspectiveCamera ref={cam} makeDefault />;
+  return <PerspectiveCamera ref={cam} makeDefault zoom={zoom} />;
 };
 
 export const DebugCam = () => {

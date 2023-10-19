@@ -59,6 +59,7 @@ const knobsMap = {
 } as const;
 
 export const knobs = objMap(knobsMap, () => 0.5);
+knobs.crossfader = 0;
 
 const offsetsMap = {
   leftSide: [176, 33],
@@ -132,8 +133,5 @@ export const useTime = (lat: Lat) => {
     });
 
     console.log("[MIDI] event", mappedTo, ...evt.data);
-    if (mappedTo.length > 1)
-      console.warn("[MIDI] mapped to several entities", ...evt.data, mappedTo);
-    if (mappedTo.length === 0) console.log("[MIDI] unmapped", ...evt.data);
   });
 })();
