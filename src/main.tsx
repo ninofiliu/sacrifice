@@ -6,6 +6,7 @@ import * as THREE from "three";
 
 import { height, width } from "./consts";
 import { World } from "./models/World";
+import { setupRecord } from "./record";
 import { x } from "./shorts";
 
 extend(THREE);
@@ -21,7 +22,7 @@ root.render(<World />);
 const dst = document.createElement("canvas");
 dst.width = width;
 dst.height = height;
-document.body.append(dst);
+document.body.append(src, dst);
 
 const ctx = x(dst.getContext("2d"));
 const loop = () => {
@@ -29,3 +30,5 @@ const loop = () => {
   requestAnimationFrame(loop);
 };
 loop();
+
+setupRecord(dst);
