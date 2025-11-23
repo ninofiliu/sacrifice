@@ -1,6 +1,6 @@
 import { Environment } from "@react-three/drei";
 
-import { DebugCam } from "../Cam";
+import { Cam } from "../Cam";
 import { AdamRunning } from "./AdamRunning";
 import { Terrain } from "./Terrain";
 import { Trees } from "./Trees";
@@ -17,7 +17,7 @@ export const World = () => {
       <ambientLight />
       <Environment preset="forest" />
 
-      <DebugCam />
+      <Cam />
     </>
   );
 };

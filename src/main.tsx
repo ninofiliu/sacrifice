@@ -1,12 +1,11 @@
-import "./main.css";
 import "./logFps";
+import "./main.css";
 
 import { createRoot, extend } from "@react-three/fiber";
 import * as THREE from "three";
 
 import { height, width } from "./consts";
 import { World } from "./models/World";
-import { setupRecord } from "./record";
 import { x } from "./shorts";
 
 extend(THREE);
@@ -30,5 +29,3 @@ const loop = () => {
   requestAnimationFrame(loop);
 };
 loop();
-
-setupRecord(dst);
