@@ -21,7 +21,7 @@ root.render(<World />);
 const dst = document.createElement("canvas");
 dst.width = width;
 dst.height = height;
-document.body.append(src, dst);
+document.body.append(dst);
 
 const ctx = x(dst.getContext("2d"));
 const loop = () => {
